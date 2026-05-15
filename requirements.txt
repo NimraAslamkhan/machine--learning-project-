@@ -2,3 +2,10 @@ pandas
 numpy
 scikit-learn
 streamlit
+setuptools
+matplotlib
+seaborn
+catboost
+xgboost
+dill
+
