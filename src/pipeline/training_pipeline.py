@@ -66,18 +66,19 @@ class CustomData:
             custom_data_input_dict = {
                 "Student_Age": [self.Student_Age],
                 "Sex": [self.Sex],
-                "Graduated High-School Type": [self.Graduated_High_School_Type],
-                "Scholarship Type": [self.Scholarship_Type],
-                "Additional Work": [self.Additional_Work],
-                "Sports Activity": [self.Sports_Activity],
+                "High_School_Type": [self.Graduated_High_School_Type],
+                "Scholarship": [self.Scholarship_Type],
+                "Additional_Work": [self.Additional_Work],
+                "Sports_activity": [self.Sports_Activity],
                 "Transportation": [self.Transportation],
-                "Weekly Study Hours": [self.Weekly_Study_Hours],
+                "Weekly_Study_Hours": [self.Weekly_Study_Hours],
                 "Attendance": [self.Attendance],
                 "Reading": [self.Reading],
                 "Notes": [self.Notes],
-                "Listening in Class": [self.Listening_in_Class],
-                "Project Work": [self.Project_Work]
+                "Listening_in_Class": [self.Listening_in_Class],
+                "Project_work": [self.Project_Work],
             }
+
 
             return pd.DataFrame(custom_data_input_dict)
 

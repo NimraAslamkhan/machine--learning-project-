@@ -28,27 +28,37 @@ class DataTransformation:
         try:
 
             numerical_columns = [
-                "Student_Age",
-                "Weekly Study Hours",
+                "Weekly_Study_Hours",
+            ]
+
+            # These features contain string values like Yes/No/Always/Never in the dataset,
+            # so they cannot be treated as numeric without mapping/encoding.
+            categorical_additional_columns = [
                 "Attendance",
                 "Reading",
                 "Notes",
-                "Listening in Class"
+                "Listening_in_Class",
+                "Student_Age",
             ]
+
+
+
+
+
 
             categorical_columns = [
                 "Sex",
-                "Graduated High-School Type",
-                "Scholarship Type",
-                "Additional Work",
-                "Sports Activity",
+                "High_School_Type",
+                "Scholarship",
+                "Additional_Work",
+                "Sports_activity",
                 "Transportation",
-                "Project Work"
+                "Project_work",
             ]
 
             num_pipeline = Pipeline(
                 steps=[
-                    ("imputer",SimpleImputer(strategy="median")),
+                    ("imputer",SimpleImputer(strategy="most_frequent")),
                     ("scaler",StandardScaler())
                 ]
             )
@@ -89,11 +99,40 @@ class DataTransformation:
             preprocessing_obj=self.get_data_transformer_object()
 
             target_column_name="Grade"
-            input_feature_train_df=train_df.drop(columns=[target_column_name],axis=1)
-            target_feature_train_df=train_df[target_column_name]
+            # Treat target as REGRESSION target by mapping letter grades to numbers.
+            # Dataset contains values like 'AA', 'AB', etc., so direct to_numeric() fails.
+            grade_map = {
+                "AA": 5.0,
+                "AB": 4.5,
+                "BB": 4.0,
+                "BC": 3.5,
+                "CC": 3.0,
+                "CD": 2.5,
+                "DD": 2.0,
+                "DF": 1.5,
+                "FF": 1.0,
+            }
 
-            input_feature_test_df=test_df.drop(columns=[target_column_name],axis=1)
-            target_feature_test_df=test_df[target_column_name]
+            train_df[target_column_name] = train_df[target_column_name].map(grade_map)
+            test_df[target_column_name] = test_df[target_column_name].map(grade_map)
+
+            train_df = train_df.dropna(subset=[target_column_name])
+            test_df = test_df.dropna(subset=[target_column_name])
+
+            if train_df.shape[0] == 0 or test_df.shape[0] == 0:
+                raise ValueError(
+                    "No rows left after mapping 'Grade' to numeric values. "
+                    "Update `grade_map` to cover all Grade values in your dataset."
+                )
+
+
+
+            input_feature_train_df = train_df.drop(columns=[target_column_name], axis=1)
+            target_feature_train_df = train_df[target_column_name]
+
+            input_feature_test_df = test_df.drop(columns=[target_column_name], axis=1)
+            target_feature_test_df = test_df[target_column_name]
+
 
             logging.info(
                 "Applying preprocessing object on training dataframe and testing dataframe"

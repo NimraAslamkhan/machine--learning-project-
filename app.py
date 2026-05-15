@@ -5,22 +5,22 @@ from src.pipeline.training_pipeline import CustomData, PredictPipeline
 
 st.title("Student Performance Prediction")
 
-
 Student_Age = st.number_input("Student Age")
 Sex = st.selectbox("Sex", ["Male", "Female"])
-Graduated_High_School_Type = st.selectbox("High School Type", ["Public", "Private"])
-Scholarship_Type = st.selectbox("Scholarship", ["Yes", "No"])
+Graduated_High_School_Type = st.selectbox("High School Type", ["Other", "State", "Private"])
+Scholarship_Type = st.selectbox("Scholarship", ["25%", "50%", "75%", "100%"])
 Additional_Work = st.selectbox("Additional Work", ["Yes", "No"])
-Sports_Activity = st.selectbox("Sports Activity", ["Yes", "No"])
+Sports_Activity = st.selectbox("Sports Activity", ["No", "Yes"])
 Transportation = st.selectbox("Transportation", ["Bus", "Car", "Walk"])
+
 Weekly_Study_Hours = st.number_input("Weekly Study Hours")
 Attendance = st.number_input("Attendance")
 Reading = st.number_input("Reading Score")
 Notes = st.number_input("Notes Score")
 Listening_in_Class = st.number_input("Listening Score")
 Project_Work = st.selectbox("Project Work", ["Yes", "No"])
-if st.button("Predict"):
 
+if st.button("Predict"):
     data = CustomData(
         Student_Age,
         Sex,
@@ -34,13 +34,14 @@ if st.button("Predict"):
         Reading,
         Notes,
         Listening_in_Class,
-        Project_Work
+        Project_Work,
     )
 
     pred_df = data.get_data_as_data_frame()
 
     predict_pipeline = PredictPipeline()
-
     result = predict_pipeline.predict(pred_df)
 
-    st.write("Predicted Grade:", result[0])
+    predicted_grade = float(result[0])
+    st.write("Predicted Grade:", round(predicted_grade, 3))
+
