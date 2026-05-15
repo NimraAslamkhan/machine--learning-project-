@@ -1,10 +1,6 @@
-# TODO - Improve model scoring / regression metrics
-
-- [x] Confirm issue: current pipeline is classification (uses `accuracy_score`) while target `Grade` is cast to string.
-- [x] Update `src/components/data_transformation.py` to treat `Grade` as regression (convert to numeric) and keep y as numeric.
-- [x] Update `src/components/model_trainer.py` to use regressors and print MAE, MSE, RMSE, R2 + cross-validation.
-- [x] Update `app.py` to display predicted grade as numeric.
-
-- [x] Run `src/pipeline/prediction_pipeline.py` and/or training to verify different metrics are printed.
-
+- [ ] Fix prediction crash caused by sklearn version mismatch in persisted artifacts
+  - [ ] Pin scikit-learn version in requirements.txt to match artifact training (1.7.2)
+  - [ ] Remove/ignore duplicate or outdated PredictPipeline implementation in src/pipeline/training_pipeline.py (keep prediction_pipeline.py version)
+  - [ ] Ensure Streamlit app uses the corrected PredictPipeline
+  - [ ] Quick smoke test: run app prediction path and confirm no _fill_dtype error
 
