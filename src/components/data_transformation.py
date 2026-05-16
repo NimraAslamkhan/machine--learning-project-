@@ -58,16 +58,16 @@ class DataTransformation:
 
             num_pipeline = Pipeline(
                 steps=[
-                    ("imputer",SimpleImputer(strategy="most_frequent")),
-                    ("scaler",StandardScaler())
+                    ("imputer", SimpleImputer(strategy="median")),
+                    ("scaler", StandardScaler())
                 ]
             )
 
             cat_pipeline = Pipeline(
                 steps=[
-                    ("imputer",SimpleImputer(strategy="most_frequent")),
-                    ("one_hot_encoder",OneHotEncoder()),
-                    ("scaler",StandardScaler(with_mean=False))
+                    ("imputer", SimpleImputer(strategy="most_frequent")),
+                    ("one_hot_encoder", OneHotEncoder(handle_unknown="ignore"))
+                    
                 ]
             )
 
@@ -77,9 +77,10 @@ class DataTransformation:
 
             preprocessor=ColumnTransformer(
                 [
-                    ("num_pipeline",num_pipeline,numerical_columns),
-                    ("cat_pipeline",cat_pipeline,categorical_columns)
-                ]
+                    ("num_pipeline", num_pipeline, numerical_columns),
+                    ("cat_pipeline", cat_pipeline, categorical_columns),
+                ],
+                remainder="drop"
             )
 
             return preprocessor
